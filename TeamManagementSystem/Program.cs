@@ -121,10 +121,7 @@ namespace TeamManagementSystem
                     Console.WriteLine("No Members added, Use option 2 to create member");
                 }
 
-                for (int i = 0; i < people.Count; i++)
-                {
-                    Console.WriteLine(i + 1 + ". " + people[i].returnDetails());
-                }
+                PrintAllUsers();
 
                 FinishedOption();
             }
@@ -135,41 +132,20 @@ namespace TeamManagementSystem
 
                 try
                 {
-                    Console.Write("Enter a Name: ");
-                    String nameInput = Console.ReadLine();
-
-                    Console.Write("Enter an Ding ID: ");
-                    int idInput = Convert.ToInt32(Console.ReadLine());
 
 
-                    if (!String.IsNullOrEmpty(nameInput))
+                    Person person = ReturnPerson(); 
+                    if (person != null) 
                     {
-                        if (idInput > 0 && idInput <= 9999)
-                        {
-                            
-                            people.Add(new Person(nameInput, idInput));
+                        people.Add(person);
+                        Console.WriteLine(Environment.NewLine+"Added Successfully");
 
-                            Console.WriteLine(Environment.NewLine+"Added Successfully");
-
-                            FinishedOption();
-
-                        }
-                        else
-                        {
-                           
-                            OutputMessage(Environment.NewLine + "Id must be 0 - 9999" + Environment.NewLine);
-                            AddMember();
-                        }
+                        FinishedOption();
                     }
                     else
                     {
-
-                        OutputMessage(Environment.NewLine  + "Name field can not be empty." + Environment.NewLine);
-
-
+                        OutputMessage("Something Went Wrong"); 
                     }
-
-
 
                 }
                 catch (Exception)
@@ -188,7 +164,73 @@ namespace TeamManagementSystem
             {
                 StartOption("Edit a Member");
 
-                FinishedOption();
+                if (people.Count == 0) 
+                {
+
+                    Console.WriteLine("No Members to edit.");
+
+                }
+                else
+                {
+                    PrintAllUsers();
+
+                    try
+                    {
+                        Console.Write(Environment.NewLine + "Enter an Index: ");
+                        int indexSelection = Convert.ToInt32(Console.ReadLine());
+                        indexSelection--;
+
+                        if (indexSelection >= 0 && indexSelection <= people.Count - 1)
+                        {
+
+                            try
+                            {
+
+
+                                Person person = ReturnPerson();
+                                if (person != null)
+                                {
+                                    people[indexSelection] = person;
+                               
+                                    Console.WriteLine(Environment.NewLine + "Edited  Successfully");
+
+                                    FinishedOption();
+                                }
+                                else
+                                {
+                                    OutputMessage("Something Went Wrong");
+                                }
+
+                            }
+                            catch (Exception)
+                            {
+                                OutputMessage(Environment.NewLine + "Something Went Wrong" + Environment.NewLine);
+
+                                EditMember();
+
+                            }
+
+                            FinishedOption();
+                        }
+                        else 
+                        {
+                            OutputMessage("Enter a valid input range"); 
+                            EditMember();
+                                
+                         }
+
+
+                    }
+                    catch (Exception)
+                    {
+                        OutputMessage("Something Went Wrong");
+                        EditMember();
+
+                        
+                    }
+                }
+
+               
             }
 
             public void SearchMemebr()
@@ -227,7 +269,54 @@ namespace TeamManagementSystem
                 Console.ReadLine ();
                 Console.Clear();
             }
-        }
+
+            public void PrintAllUsers()
+            {
+                for (int i = 0; i < people.Count; i++)
+                {
+                    Console.WriteLine(i + 1 + ". " + people[i].returnDetails());
+                }
+            }
+
+            public Person ReturnPerson()
+            {
+               
+                Console.Write("Enter a Name: ");
+                String nameInput = Console.ReadLine();
+
+                Console.Write("Enter Ding ID: ");
+                int idInput = Convert.ToInt32(Console.ReadLine());
+
+
+                if (!String.IsNullOrEmpty(nameInput))
+                {
+                    if (idInput > 0 && idInput <= 9999)
+                    {
+                            return new Person(nameInput, idInput);
+                       
+                    }
+                    else
+                    {
+
+                        OutputMessage(Environment.NewLine + "Id must be 0 - 9999" + Environment.NewLine);
+                       
+                    }
+                }
+                else
+                {
+
+                    OutputMessage(Environment.NewLine + "Name field can not be empty." + Environment.NewLine);
+
+                }
+                return null;
+
+            }
+          
+            }
+
+       
+
+       
 
 
         static void Main(string[] args)
