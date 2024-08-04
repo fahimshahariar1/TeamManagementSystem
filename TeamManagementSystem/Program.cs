@@ -63,6 +63,26 @@ namespace TeamManagementSystem
                 Console.WriteLine("5. Remove Member");
                 Console.WriteLine("6. Exit");
 
+                Console.WriteLine();
+                Console.Write("Enter an Option: ");
+             
+
+
+                if (int.TryParse(Console.ReadLine(), out int menuOption))
+
+                {
+                    Console.WriteLine(menuOption);
+                }
+                else {
+
+                    Console.WriteLine("Incorrect Option");
+                    Console.WriteLine("Press <Enter> to try again");
+                    Console.ReadLine();
+                    Console.Clear();
+                    printMenu();
+
+                }
+
             }
 
 
