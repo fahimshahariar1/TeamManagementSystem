@@ -94,7 +94,11 @@ namespace TeamManagementSystem
                         RemoveMember();
                     }
 
-                    printMenu();
+                    if (menuOption >= 1 && menuOption <= 5)
+                    {
+                        printMenu();
+                    }
+                    
                     
                 }
                 else {
@@ -116,12 +120,11 @@ namespace TeamManagementSystem
 
                 StartOption("All Integration Team Members");
 
-                if (people.Count == 0)
+                if (!isSystemEmpty())
                 {
-                    Console.WriteLine("No Members added, Use option 2 to create member");
+                    PrintAllUsers();
                 }
-
-                PrintAllUsers();
+                
 
                 FinishedOption();
             }
@@ -237,13 +240,77 @@ namespace TeamManagementSystem
             {
                 StartOption("Search Member");
 
-                FinishedOption();
+                if (people.Count == 0)
+                {
+                    Console.WriteLine("No members in the system");
+                }
+                else
+                {
+                    Console.Write("Enter Name: ");
+                    String nameInput = Console.ReadLine();
+
+                    bool found = false;
+
+                    if (!String.IsNullOrEmpty(nameInput))
+                    {
+                        for (int i = 0; i < people.Count; i++)
+                        {
+                            if (people[i].name.ToLower().Equals(nameInput.ToLower()))
+                            {
+                                Console.WriteLine(people[i].returnDetails());
+                                found = true;
+                            }
+                        }
+
+                        if (!found)
+                        {
+                            Console.WriteLine("No Users Found");
+                        }
+
+                        FinishedOption();
+                    }
+                    else 
+                    {
+
+                        OutputMessage("Please Enter a name.");
+                        SearchMemebr();
+
+                    }
+                }
+
+               
             }
             public void RemoveMember()
             {
                 StartOption("Remove a Member");
 
-                FinishedOption();
+                if (people.Count == 0)
+                {
+                    Console.WriteLine("There are no memebrs in the system");
+                  
+                }
+                else
+                {
+                    PrintAllUsers();
+                    Console.Write("Enter an Index: ");
+                    int index = Convert.ToInt32(Console.ReadLine());
+                    index--;
+
+                    if (index >= 0 && index <= people.Count - 1)
+                    {
+
+                        people.RemoveAt(index);
+                        Console.WriteLine("Successfully Removed");
+                        FinishedOption();
+                    }
+                    else
+                    {
+                        OutputMessage("Enter a valid index") ;
+                        RemoveMember();
+                    }
+                }
+
+                
             }
 
             public void FinishedOption () {
@@ -311,8 +378,23 @@ namespace TeamManagementSystem
                 return null;
 
             }
-          
+
+            public bool isSystemEmpty()
+            {
+                if (people.Count == 0)
+                {
+                    Console.WriteLine("There are no members in the system");
+                    return true;
+
+                }
+                else
+                {
+                    return false;
+                }
             }
+            
+          
+      }
 
        
 
@@ -325,8 +407,8 @@ namespace TeamManagementSystem
            
             Manager manager= new Manager();
 
-            
-             
+            Console.WriteLine( Environment.NewLine + "Goodbye! :)");
+
 
             Console.ReadLine();
         }
